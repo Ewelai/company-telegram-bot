@@ -1,16 +1,16 @@
-const URL = process.env.URL;
-const PORT = process.env.PORT || 3001;
-const BOT_TOKEN = process.env.BOT_TOKEN;
+// const URL = process.env.URL;
+// const PORT = process.env.PORT || 3001;
+// const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const Telegraf = require('telegraf');
 const session = require("telegraf/session");
 const Stage = require("telegraf/stage");
 const Markup = require('telegraf/markup')
-const bot = new Telegraf(BOT_TOKEN);
+const bot = new Telegraf(process.env.BOT_TOKEN);
 const { ttn, driverLicense, warehouseLicense } = require('../scenarios/scenario');
 
-bot.telegram.setWebhook(`${URL}bot${BOT_TOKEN}`);
-bot.startWebhook(`/bot${BOT_TOKEN}`, null, PORT)
+// bot.telegram.setWebhook(`${URL}bot${BOT_TOKEN}`);
+// bot.startWebhook(`/bot${BOT_TOKEN}`, null, PORT)
 
 bot.start((ctx) => {
   // console.log('Id пользователя:', ctx.from.id);

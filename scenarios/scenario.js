@@ -22,6 +22,7 @@ const ttn = new WizardScene('ttnNumber', (ctx) => {
   if(!isNaN(license)) {
     let result = await expressCargo(license);
     ctx.replyWithHTML(result);
+    return ctx.scene.leave();
   } else {
     return ctx.reply(ERROR);
   }
@@ -43,10 +44,10 @@ const warehouseLicense = new WizardScene('warehouseLicense', (ctx) => {
   if(!isNaN(license)) {
     let result = await warehouseInfo(license);
     ctx.replyWithHTML(result);
+    return ctx.scene.leave();
   } else {
     return ctx.reply(ERROR);
   }
-  return ctx.scene.leave();
 });
 
 module.exports = { 
