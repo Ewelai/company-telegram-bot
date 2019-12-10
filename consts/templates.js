@@ -3,8 +3,8 @@ const TEMPLATE_TTN = ({status, serialNumber, price, release_date, delivery_date}
   <b>Status:</b> ${status}
   <b>License:</b> ${serialNumber}
   <b>Price:</b> ${price}
-  <b>Release Date:</b> ${release_date.toUTCString()}
-  <b>Delivery Date:</b> ${delivery_date.toUTCString()}
+  <b>Release Date:</b> ${release_date}
+  <b>Delivery Date:</b> ${delivery_date}
 `;
 
 const TEMPLATE_DRIVER = ({address}) => `
