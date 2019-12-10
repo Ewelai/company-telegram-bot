@@ -1,5 +1,5 @@
 const URL = process.env.URL;
-const PORT = process.env.PORT || 2000;
+const PORT = process.env.PORT || 3001;
 const BOT_TOKEN = process.env.BOT_TOKEN;
 
 const Telegraf = require('telegraf');
