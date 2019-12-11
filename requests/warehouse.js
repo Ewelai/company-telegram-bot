@@ -15,7 +15,7 @@ const warehouseInfo = async (license) => {
   return rp(options).then((body) => {
     console.log(body)
     return TEMPLATE_DRIVER(JSON.parse(body));
-  }).catch((err) => {
+  }).catch((err) => { 
     return ERROR;
   })
 }

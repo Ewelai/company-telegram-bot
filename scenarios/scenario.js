@@ -4,18 +4,12 @@ const { warehouseInfo } = require('../requests/warehouse');
 const { expressCargo } = require('../requests/expressCargo');
 const { ERROR } = require('../consts/messages');
 const { TEMPLATE_DRIVER, TEMPLATE_TTN } = require('../consts/templates');
-
-// Models
-// const TTNModel = require('../models/TTN');
-
-/* 
-  Release dete - warehouse
-  Delivery Date - truck way
-*/
+const { createToken } = require('../middleware/token')
 
 /* TODO:
 1. Порядок ввода == порядку записи в стейт 
 */
+let dataForToken
 
 const login = new WizardScene('login', (ctx) => {
   // ctx.reply('Enter your email, please!')
@@ -30,8 +24,8 @@ const login = new WizardScene('login', (ctx) => {
   const email = ctx.wizard.state.email;
   const pass = ctx.wizard.state.password;
 
-  console.log('email', email)
-  console.log('pass', pass)
+  dataForToken = { email, pass }
+  
   ctx.reply('Welcome! Choose your destiny, please.', Markup.inlineKeyboard([
     Markup.callbackButton('Express Cargo', 'expressCargo'),
     Markup.callbackButton('Warehouse', 'warehouse')
@@ -40,56 +34,40 @@ const login = new WizardScene('login', (ctx) => {
 });
 
 const expressCargoScene = new WizardScene('expressCargo', (ctx) => {
-  ctx.reply('ECScene')
-  return ctx.scene.leave();
+  ctx.reply('Enter ttn license')
+  const token = createToken({...dataForToken, company: 'express_cargo'})
+  ctx.wizard.state.token = token;
+  return ctx.wizard.next()
+}, async(ctx) => {
+  let license = ctx.message.text
+  const token = ctx.wizard.state.token
+
+  if(Number(license)) {
+    const ttnLicense = await expressCargo(license, token)
+
+    ctx.reply('Loading...')
+    ctx.replyWithHTML(ttnLicense);
+    return ctx.scene.leave();
+  } else {
+    // ctx.reply(ERROR);
+    // return ctx.reply(ERROR, Markup.inlineKeyboard([
+    //   Markup.callbackButton('Back', 'scBack'),
+    //   Markup.callbackButton('Leave', 'scLeave')
+    // ]).extra());
+  }
+
+  // return ctx.scene.leave();
 });
 
 const warehouseScene = new WizardScene('warehouse', (ctx) => {
   ctx.reply('WHScene')
+  const token = createToken({...dataForToken, company: 'main'})
+  ctx.wizard.state.token = token;
   return ctx.scene.leave();
 });
-
-// const ttn = new WizardScene('ttnNumber', (ctx) => {
-  // First step
-  // ctx.reply('Enter ttn');
-//   return ctx.wizard.next();
-// }, async(ctx) => {
-//   // Second step
-//   let license = ctx.message.text;
-//   if(!isNaN(license)) {
-//     let result = await expressCargo(license);
-//     ctx.replyWithHTML(result);
-//     return ctx.scene.leave();
-//   } else {
-//     return ctx.reply(ERROR);
-//   }
-// });
-
-// const driverLicense = new WizardScene('driverLicense', (ctx) => {
-//   ctx.reply('Enter driver license');
-//   return ctx.wizard.next();
-// }, (ctx) => {
-//   ctx.reply('Finish driver');
-//   return ctx.scene.leave();
-// });
-
-// const warehouseLicense = new WizardScene('warehouseLicense', (ctx) => {
-//   ctx.reply('Enter warehouse license');
-//   return ctx.wizard.next();
-// }, async(ctx) => {
-//   let license = ctx.message.text;
-//   if(!isNaN(license)) {
-//     let result = await warehouseInfo(license);
-//     ctx.replyWithHTML(result);
-//     return ctx.scene.leave();
-//   } else {
-//     return ctx.reply(ERROR);
-//   }
-// });
 
 module.exports = { 
   expressCargoScene, 
   warehouseScene,
   login
-  // driverLicense,
 };
