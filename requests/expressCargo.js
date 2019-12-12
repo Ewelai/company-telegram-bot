@@ -12,20 +12,19 @@ const expressCargo = async (license, token) => {
     url: `${process.env.EC_API}/ttn/${license}`,
     method: 'Get', 
     headers
-  }
-
-  console.log(options)
+  };
 
   return rp(options).then((body) => {
     try {
       console.log(body)
       return TEMPLATE_TTN(JSON.parse(body));
     } catch(err) {
-      return ERROR_REQ
+      return ERROR_REQ;
     }
   }).catch((err) => {
-    console.log('err', err)
+    let error = JSON.parse(err.error);
+    return `${error.message} Your session is finished!`;
   });
-}
+};
 
-module.exports = { expressCargo }
+module.exports = { expressCargo };
