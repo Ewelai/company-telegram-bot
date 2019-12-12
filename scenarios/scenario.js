@@ -2,9 +2,7 @@ const Telegraf = require('telegraf');
 const WizardScene = require("telegraf/scenes/wizard");
 const Markup = require('telegraf/markup')
 const { expressCargo } = require('../requests/expressCargo');
-const { warehouseInfo } = require('../requests/warehouse');
 const { ERROR } = require('../constants/messages');
-const { TEMPLATE_TTN, TEMPLATE_WAREHOUSE } = require('../constants/templates');
 const { createToken } = require('../middleware/token')
 
 /* TODO:
@@ -22,7 +20,7 @@ const login = new WizardScene('login', (ctx) => {
 //   return ctx.wizard.next();
 // }, (ctx) => {
   ctx.wizard.state.password = '123'; 
-  ctx.wizard.state.email = 'sysadmi1n@mail.ru'; // Invalid email. Remove 1 to get it valid
+  ctx.wizard.state.email = 'sysadmin@mail.ru'; // Invalid email. Remove 1 to get it valid
   const email = ctx.wizard.state.email;
   const pass = ctx.wizard.state.password;
 
@@ -42,7 +40,7 @@ const expressCargoScene = new WizardScene('expressCargo', (ctx) => {
   return ctx.wizard.next()
 }, async(ctx) => {
   let license = ctx.message.text
-  const token = ctx.wizard.state.token
+  const token = ctx.wizard.state.token;
 
   if(Number(license)) {
     ctx.reply('Loading...')
@@ -50,12 +48,23 @@ const expressCargoScene = new WizardScene('expressCargo', (ctx) => {
     ctx.replyWithHTML(ttnLicense);
     return ctx.scene.leave();
   } else {
-    ctx.reply(ERROR);
-    if(ctx.message.text.toLowerCase() === 'Back' || 'Назад') {
-      ctx.wizard.back();
-    }
+    ctx.reply(ERROR).then(() => {
+      ctx.reply('Type "Back" to get back or "Leave" to stop session.')
+    })
 
+    return ctx.wizard.next();
+  }
+}, (ctx) => {
+  if(ctx.message.text === 'Back') {
+    ctx.reply('Enter ttn license')
+    return ctx.wizard.back();
+  } else if(ctx.message.text === 'Leave') {
+    console.log('leave')
+    ctx.reply('Bye')
     return ctx.scene.leave();
+  } else {
+    ctx.reply('Enter valid TTN License')
+    ctx.wizard.back();
   }
 });
 

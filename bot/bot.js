@@ -18,7 +18,12 @@ bot.start((ctx) => {
 });
 
 // Commands
-bot.command('stop', (ctx) => ctx.reply(STOP));
+// bot.command('stop', (ctx) => {
+//   ctx.reply(STOP);
+//   ctx.scene.login.leave();
+//   ctx.scene.expressCargo.leave();
+//   ctx.scene.warehouse.leave();
+// });
 bot.command('help', (ctx) => ctx.replyWithHTML(HELP));
 
 // Actions

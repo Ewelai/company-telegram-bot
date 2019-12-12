@@ -1,4 +1,4 @@
-const ERROR = `Value isn't valid! Type "Back" to get back or /stop to stop session.`;
+const ERROR = `Value isn't valid!`;
 const ERROR_REQ = `Information not found!`
 const STOP = `Ok, Boss! All stopped!`;
 const HELP = `
