@@ -3,6 +3,7 @@ const session = require("telegraf/session");
 const Stage = require("telegraf/stage");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const scene = require('../scenarios/scenario');
+const { HELP, STOP } = require('../constants/messages');
 
 const stage = new Stage();
 stage.register(scene.login);
@@ -13,8 +14,22 @@ bot.use(session());
 bot.use(stage.middleware());
 
 bot.start((ctx) => {
-  ctx.reply(`Welcome! Type login in chat to get access.`)
+  ctx.reply(`Welcome ${ctx.from.first_name}! Type "Login" to get access or just start conversation!`)
 });
+
+// Commands
+bot.command('stop', (ctx) => ctx.reply(STOP));
+bot.command('help', (ctx) => ctx.replyWithHTML(HELP));
+
+// Actions
+bot.hears('Login', Stage.enter('login'))
+bot.action('expressCargo', (ctx) => ctx.scene.enter('expressCargo'));
+bot.action('warehouse', (ctx) => ctx.scene.enter('warehouse'));
+
+bot.launch()
+
+module.exports = bot;
+
 
 // bot.start((ctx) => {
 //   // console.log('Id пользователя:', ctx.from.id);
@@ -26,12 +41,3 @@ bot.start((ctx) => {
 //   ]).extra());
 // });
 
-
-// Actions
-bot.hears('login', Stage.enter('login'))
-bot.action('expressCargo', (ctx) => ctx.scene.enter('expressCargo'));
-bot.action('warehouse', (ctx) => ctx.scene.enter('warehouse'));
-
-bot.launch()
-
-module.exports = bot;

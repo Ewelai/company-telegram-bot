@@ -1,9 +1,10 @@
+const Telegraf = require('telegraf');
 const WizardScene = require("telegraf/scenes/wizard");
 const Markup = require('telegraf/markup')
 const { warehouseInfo } = require('../requests/warehouse');
 const { expressCargo } = require('../requests/expressCargo');
-const { ERROR } = require('../consts/messages');
-const { TEMPLATE_DRIVER, TEMPLATE_TTN } = require('../consts/templates');
+const { ERROR } = require('../constants/messages');
+const { TEMPLATE_DRIVER, TEMPLATE_TTN } = require('../constants/templates');
 const { createToken } = require('../middleware/token')
 
 /* TODO:
@@ -53,9 +54,9 @@ const expressCargoScene = new WizardScene('expressCargo', (ctx) => {
     if(ctx.message.text.toLowerCase() === 'Back' || 'Назад') {
       ctx.wizard.back();
     }
-  }
 
-  // return ctx.scene.leave();
+    return ctx.scene.leave();
+  }
 });
 
 const warehouseScene = new WizardScene('warehouse', (ctx) => {
@@ -70,3 +71,14 @@ module.exports = {
   warehouseScene,
   login
 };
+
+
+// ctx.reply(ERROR).then(() => {
+//   ctx.reply('Back', aboutMenu)
+// });
+
+// const aboutMenu = Telegraf.Extra
+//   .markdown()
+//   .markup((m) => m.keyboard([
+//     m.callbackButton('Back')
+//   ]).resize())

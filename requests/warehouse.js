@@ -1,6 +1,6 @@
 const rp = require('request-promise');
-const { ERROR } = require('../consts/messages');
-const { TEMPLATE_DRIVER } = require('../consts/templates');
+const { ERROR } = require('../constants/messages');
+const { TEMPLATE_DRIVER } = require('../constants/templates');
 const headers = {
   'Authorization': `Bearer ${process.env.TOKEN_WH}`
 }
