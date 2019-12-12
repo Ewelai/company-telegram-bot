@@ -4,7 +4,7 @@ const Markup = require('telegraf/markup')
 const { expressCargo } = require('../requests/expressCargo');
 const { warehouseInfo } = require('../requests/warehouse');
 const { ERROR } = require('../constants/messages');
-const { TEMPLATE_TTN, TEMPLATE_WAREHOUSE } = require('../consts/templates');
+const { TEMPLATE_TTN, TEMPLATE_WAREHOUSE } = require('../constants/templates');
 const { createToken } = require('../middleware/token')
 
 /* TODO:
