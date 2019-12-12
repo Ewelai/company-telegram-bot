@@ -12,10 +12,16 @@ const warehouseInfo = async (license) => {
     method: 'Get'
   }
 
-  return rp(options).then((body) => {
-    console.log(body)
-    return TEMPLATE_DRIVER(JSON.parse(body));
-  }).catch((err) => { 
+  return rp(options)
+  .then((body) => {
+    try {
+      console.log(body)
+      return TEMPLATE_WAREHOUSE(JSON.parse(body));
+    } catch(err) {
+      return ERROR_REQ
+    }
+  })
+  .catch((err) => { 
     return ERROR;
   })
 }

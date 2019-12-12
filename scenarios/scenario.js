@@ -1,10 +1,10 @@
 const Telegraf = require('telegraf');
 const WizardScene = require("telegraf/scenes/wizard");
 const Markup = require('telegraf/markup')
-const { warehouseInfo } = require('../requests/warehouse');
 const { expressCargo } = require('../requests/expressCargo');
+const { warehouseInfo } = require('../requests/warehouse');
 const { ERROR } = require('../constants/messages');
-const { TEMPLATE_DRIVER, TEMPLATE_TTN } = require('../constants/templates');
+const { TEMPLATE_TTN, TEMPLATE_WAREHOUSE } = require('../consts/templates');
 const { createToken } = require('../middleware/token')
 
 /* TODO:
@@ -60,7 +60,7 @@ const expressCargoScene = new WizardScene('expressCargo', (ctx) => {
 });
 
 const warehouseScene = new WizardScene('warehouse', (ctx) => {
-  ctx.reply('WHScene')
+  ctx.reply('Enter warehouse license')
   const token = createToken({...dataForToken, company: 'main'})
   ctx.wizard.state.token = token;
   return ctx.scene.leave();
