@@ -7,12 +7,17 @@ const TEMPLATE_TTN = ({status, serialNumber, price, release_date, delivery_date}
   <b>Delivery Date:</b> ${delivery_date}
 `;
 
-const TEMPLATE_DRIVER = ({address}) => `
+const TEMPLATE_WAREHOUSE = ({areas, company, name, license, freeArea, totalArea, address}) => `
   Your query is successfull!
+  <b>Areas:</b> ${areas.length}
+  <b>Company:</b> ${company}
+  <b>License:</b> ${license}
+  <b>Name:</b> ${name}
+  <b>Free area:</b> ${freeArea}/${totalArea}
   <b>Address:</b> ${address}
 `;
 
 module.exports = {
-  TEMPLATE_DRIVER,
-  TEMPLATE_TTN
+  TEMPLATE_TTN,
+  TEMPLATE_WAREHOUSE
 };
