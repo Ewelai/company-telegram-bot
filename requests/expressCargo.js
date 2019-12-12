@@ -2,7 +2,6 @@ const rp = require('request-promise');
 const { ERROR, ERROR_REQ } = require('../consts/messages');
 const { TEMPLATE_TTN } = require('../consts/templates');
 
-
 // FIX
 const expressCargo = async (license, token) => {
   const headers = {
