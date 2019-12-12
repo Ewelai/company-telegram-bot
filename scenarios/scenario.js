@@ -9,6 +9,7 @@ const { createToken } = require('../middleware/token')
 /* TODO:
 1. Порядок ввода == порядку записи в стейт 
 */
+
 let dataForToken
 
 const login = new WizardScene('login', (ctx) => {
@@ -48,11 +49,10 @@ const expressCargoScene = new WizardScene('expressCargo', (ctx) => {
     ctx.replyWithHTML(ttnLicense);
     return ctx.scene.leave();
   } else {
-    // ctx.reply(ERROR);
-    // return ctx.reply(ERROR, Markup.inlineKeyboard([
-    //   Markup.callbackButton('Back', 'scBack'),
-    //   Markup.callbackButton('Leave', 'scLeave')
-    // ]).extra());
+    ctx.reply(ERROR);
+    if(ctx.message.text.toLowerCase() === 'Back' || 'Назад') {
+      ctx.wizard.back();
+    }
   }
 
   // return ctx.scene.leave();

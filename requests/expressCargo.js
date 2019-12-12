@@ -24,7 +24,7 @@ const expressCargo = async (license, token) => {
     }
   }).catch((err) => {
     let error = JSON.parse(err.error);
-    return `${error.message}`;
+    return `${error.message} Your session is finished!`;
   });
 };
 

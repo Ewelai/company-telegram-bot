@@ -1,4 +1,4 @@
-const ERROR = `Value isn't valid! Enter value again, please!`;
+const ERROR = `Value isn't valid! Type "Back" to get back`;
 const ERROR_REQ = `Information not found!`
 
 module.exports = {
