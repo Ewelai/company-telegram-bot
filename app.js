@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const telegramBot = require('./bot/bot');
+const telegramBot = require('./bot');
 
 app.use(bodyParser.json());
 app.use(cors());

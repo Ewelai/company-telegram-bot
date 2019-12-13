@@ -3,7 +3,8 @@ const WizardScene = require("telegraf/scenes/wizard");
 const Markup = require('telegraf/markup')
 const { expressCargo } = require('../requests/expressCargo');
 const { ERROR } = require('../constants/messages');
-const { createToken } = require('../middleware/token')
+const { createToken } = require('../middleware/token');
+const { BACK_LEAVE } = require('../constants/conditions');
 
 /* TODO:
 1. Порядок ввода == порядку записи в стейт 
@@ -15,7 +16,7 @@ const login = new WizardScene('login', (ctx) => {
   // ctx.reply('Enter your email, please!')
   // return ctx.wizard.next();
 // }, (ctx) => {
-//   ctx.reply('Enter your password, please!')
+//   ctx.reply('Enter your password, please!');
 //   ctx.wizard.state.email = ctx.message.text;
 //   return ctx.wizard.next();
 // }, (ctx) => {
@@ -24,7 +25,7 @@ const login = new WizardScene('login', (ctx) => {
   const email = ctx.wizard.state.email;
   const pass = ctx.wizard.state.password;
 
-  dataForToken = { email, pass }
+  dataForToken = { email, pass };
   
   ctx.reply('Welcome! Choose your destiny, please.', Markup.inlineKeyboard([
     Markup.callbackButton('Express Cargo', 'expressCargo'),
@@ -37,40 +38,30 @@ const expressCargoScene = new WizardScene('expressCargo', (ctx) => {
   ctx.reply('Enter ttn license')
   const token = createToken({...dataForToken, company: 'express_cargo'})
   ctx.wizard.state.token = token;
-  return ctx.wizard.next()
+  return ctx.wizard.next();
 }, async(ctx) => {
-  let license = ctx.message.text
+  let license = ctx.message.text;
   const token = ctx.wizard.state.token;
 
   if(Number(license)) {
     ctx.reply('Loading...')
-    const ttnLicense = await expressCargo(license, token)
+    const ttnLicense = await expressCargo(license, token);
     ctx.replyWithHTML(ttnLicense);
     return ctx.scene.leave();
   } else {
     ctx.reply(ERROR).then(() => {
-      ctx.reply('Type "Back" to get back or "Leave" to stop session.')
-    })
+      ctx.reply('Type "Back" to get back or "Leave" to stop session.');
+    });
 
     return ctx.wizard.next();
   }
 }, (ctx) => {
-  if(ctx.message.text === 'Back') {
-    ctx.reply('Enter ttn license')
-    return ctx.wizard.back();
-  } else if(ctx.message.text === 'Leave') {
-    console.log('leave')
-    ctx.reply('Bye')
-    return ctx.scene.leave();
-  } else {
-    ctx.reply('Enter valid TTN License')
-    ctx.wizard.back();
-  }
+  BACK_LEAVE(ctx);
 });
 
 const warehouseScene = new WizardScene('warehouse', (ctx) => {
-  ctx.reply('Enter warehouse license')
-  const token = createToken({...dataForToken, company: 'main'})
+  ctx.reply('Enter warehouse license');
+  const token = createToken({...dataForToken, company: 'main'});
   ctx.wizard.state.token = token;
   return ctx.scene.leave();
 });
