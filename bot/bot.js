@@ -1,7 +1,7 @@
 const Telegraf = require('telegraf');
 const session = require("telegraf/session");
 const Stage = require("telegraf/stage");
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const bot = new Telegraf(process.env.BOT_TOKEN, {polling: true});
 const scene = require('../scenarios/scenario');
 const { HELP, STOP } = require('../constants/messages');
 
@@ -26,8 +26,10 @@ bot.start((ctx) => {
 // });
 bot.command('help', (ctx) => ctx.replyWithHTML(HELP));
 
+bot.command('login', (ctx) => ctx.scene.enter('login'));
+
 // Actions
-bot.hears('Login', Stage.enter('login'))
+// bot.hears('Login', Stage.enter('login'))
 bot.action('expressCargo', (ctx) => ctx.scene.enter('expressCargo'));
 bot.action('warehouse', (ctx) => ctx.scene.enter('warehouse'));
 
