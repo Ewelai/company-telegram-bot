@@ -5,6 +5,7 @@ const HELP = `
 We have commands such as:
 /start - to get start with bot
 /stop - to stop bot at any time
+/login - to authorizate for requests
 /help - to read more about commands 
 `;
 
