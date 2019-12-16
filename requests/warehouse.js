@@ -1,28 +1,30 @@
-const rp = require('request-promise');
-const { ERROR } = require('../constants/messages');
-const { TEMPLATE_DRIVER } = require('../constants/templates');
-const headers = {
-  'Authorization': `Bearer ${process.env.TOKEN_WH}`
-}
+const rp = require('request-promise')
+const { ERROR_REQ } = require('../constants/messages')
+const { TEMPLATE_WAREHOUSE } = require('../constants/templates')
 
-const warehouseInfo = async (license) => {
-  let options = {
+const warehouseInfo = async (license, token) => {
+  const headers = {
+    'bot-token': token
+  }
+
+  const options = {
     headers,
-    url: `${process.env.WH_API}/api/warehouseAddress/${license}`,
+    url: `${process.env.WH_API}/api/warehouseToSideService/${license}`,
+    // url: `http://localhost:5000/api/warehouseToSideService/${license}`,
     method: 'Get'
   }
 
   return rp(options)
   .then((body) => {
     try {
-      console.log(body)
       return TEMPLATE_WAREHOUSE(JSON.parse(body));
     } catch(err) {
-      return ERROR_REQ
+      return ERROR_REQ;
     }
   })
-  .catch((err) => { 
-    return ERROR;
+  .catch((err) => {
+    let error = JSON.parse(err.error);
+    return `${error.message} Your session is finished!`;
   })
 }
 
