@@ -20,16 +20,10 @@ bot.start((ctx) => {
 // Commands
 bot.command('stop', (ctx) => {
   ctx.reply(STOP);
-  bot.stopPolling()
+  ctx.scene.leave('login');
 });
 bot.command('help', (ctx) => ctx.replyWithHTML(HELP));
 bot.command('login', (ctx) => ctx.scene.enter('login'));
-// bot.hears('/stop', (ctx) => {
-//   ctx.reply(STOP);
-//   ctx.scene.leave('login');
-//   ctx.scene.leave('expressCargo');
-//   ctx.scene.leave('warehouse');
-// })
 
 // Actions
 bot.action('expressCargo', (ctx) => ctx.scene.enter('expressCargo'));
