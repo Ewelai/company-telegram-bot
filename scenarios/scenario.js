@@ -19,7 +19,7 @@ const login = new WizardScene('login', (ctx) => {
 
   return ctx.wizard.next();
 }, (ctx) => {
-  const email = ctx.wizard.state.email;
+  const email = ctx.wizard.state.email.toLowerCase();
   const pass = ctx.wizard.state.password;
 
   dataForToken = { email, pass };
