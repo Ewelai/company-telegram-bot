@@ -48,8 +48,6 @@ const sceneCreator = (company, type, serviceRequest) => {
       ctx.reply('Loading...')
       const ttnLicense = await serviceRequest(license, token);
       ctx.replyWithHTML(ttnLicense);
-
-      return ctx.scene.leave();
     } else {
       ctx.reply(ERROR).then(() => {
         ctx.reply('Type "Back" to get back or "Leave" to stop session.');
